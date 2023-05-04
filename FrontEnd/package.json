@@ -1,0 +1,23 @@
+{
+  "name": "portfolio-architecte-sophie-bluel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nonolulu00/PortfolioSB.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nonolulu00/PortfolioSB/issues"
+  },
+  "homepage": "https://github.com/Nonolulu00/PortfolioSB#readme",
+  "devDependencies": {
+    "eslint": "^8.39.0"
+  }
+}
