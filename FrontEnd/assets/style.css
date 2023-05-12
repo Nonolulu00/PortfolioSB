@@ -49,6 +49,7 @@ table {
 /** end reset css**/
 body {
 	max-width: 1140px;
+	height: 100%;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
@@ -59,7 +60,7 @@ header {
 	margin: 50px 0
 }
 section {
-	border: purple 1px solid;
+	/* border: purple 1px solid; */
 	margin: 50px 0
 }
 
@@ -91,12 +92,13 @@ nav ul {
 	list-style-type: none;
 
 }
-nav li {
+nav a {
 	padding: 0 10px;
 	font-size: 1.2em;
+	text-decoration: none;
 }
 
-li:hover {
+a:hover {
 	color: #B1663C;
 }
 #introduction {
@@ -134,15 +136,13 @@ li:hover {
 }
 
 .filters {
-	border: #B1663C solid 1px;
 	width: 585px;
 	display: flex;
 	justify-content: space-between;
 
 }
 
-.filter-btn-all,
-.filter-btn{
+button {
 	height: 37px;
 	border: #1D6154 1px solid;
 	color: #1D6154;
@@ -155,6 +155,7 @@ li:hover {
 	cursor: pointer;
 	line-height: 100%;
 }
+
 
 .filter-btn-all,
 .filter-btn:hover{
@@ -181,7 +182,7 @@ li:hover {
 
 }
 #contact {
-	width: 50%;
+	width: 40%;
 margin: auto;
 }
 #contact > * {
@@ -191,24 +192,27 @@ margin: auto;
 #contact h2{
 	margin-bottom: 20px;
 }
-#contact form {
+ form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+input {
 	height: 50px;
+	padding-left: 9px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
-	margin: 2em 0 1em 0;
+label {
+	align-self: flex-start;
+	margin: 1em 0 1em 0;
 }
 #contact textarea {
 	border: none;
+	resize: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
@@ -229,3 +233,41 @@ footer nav ul {
 	margin: 2em
 }
 
+
+/******** connexion page ********/
+
+.login-container{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	padding-top: 60px;
+
+}
+
+.form-input{
+	display: flex;
+	flex-direction: column;
+	width: 30ch;
+}
+
+label{
+	font-family: 'Work Sans';
+	font-size: 14px;
+	color: #3D3D3D;
+}
+
+.submit-btn {
+	height: 36px;
+	background-color: #1D6154;
+	color: white;
+	width: 60%;
+	margin-top: 37px;
+	align-self: center;
+	font-size: 14px;
+}
+
+.login-container a {
+	margin-top: 28px;
+	align-self: center;
+}

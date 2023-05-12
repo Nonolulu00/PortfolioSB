@@ -1,5 +1,6 @@
 let works = window.localStorage.getItem("works");
 let categories = window.localStorage.getItem("categories");
+// let token = window.localStorage.getItem("token");
 console.log("works en local = ", works);
 console.log("categories en local = ", categories);
 
