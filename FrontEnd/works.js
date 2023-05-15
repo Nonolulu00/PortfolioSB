@@ -85,4 +85,54 @@ function addFilterListener(categories, works) {
   });
 }
 
+//modify works gallery modal
+let modal = null;
+const openModal = function(e) {
+  e.preventDefault();
+  const target = document.querySelector(e.target.getAttribute('href'));
+  target.style.display = "flex";
+  modal = target;
+  generateModalGallery(works);
+  
+  modal.addEventListener('click', function(event){
+    if(event.target.matches('.close-icon') || event.target.matches(".modal")){
+      closeModal();
+    }
+  });
+};
 
+const closeModal = function() {
+  modal.style.display= 'none';
+  modal = null;
+};
+
+document.querySelectorAll('.js-modal').forEach(a => {
+  a.addEventListener('click', openModal);
+
+});
+
+function generateModalGallery(works) {
+  works.forEach((work) => {
+    const modalGallery = document.querySelector('.modal-gallery');
+    const workContainer = document.createElement('div');
+    workContainer.classList.add('modal-work-container');
+
+    const thumbnails = document.createElement('figure');
+    thumbnails.classList.add('thumbnails');
+    thumbnails.style.backgroundImage = `url(${work.imageUrl})`;
+
+    const trashContainer = document.createElement('div');
+    trashContainer.classList.add('trash-container');
+    const trashIcon = document.createElement('img');
+    trashIcon.src = './assets/icons/trash-can-filled-24.png';
+    trashIcon.classList.add('trash-icon');
+    const edit = document.createElement('p');
+    edit.innerText = "éditer";
+
+    trashContainer.appendChild(trashIcon);
+    thumbnails.appendChild(trashContainer);
+    workContainer.appendChild(thumbnails);
+    workContainer.appendChild(edit);
+    modalGallery.appendChild(workContainer);
+  });
+}
