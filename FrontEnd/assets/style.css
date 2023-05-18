@@ -176,11 +176,15 @@ nav ul {
   align-items: center;
   list-style-type: none;
 }
+
+a {
+  text-decoration: none;
+  color: black;
+
+}
 nav a {
   padding: 0 10px;
   font-size: 1.2em;
-  text-decoration: none;
-  color: black;
 }
 
 a:hover {
@@ -220,12 +224,30 @@ a:hover {
   text-align: center;
 }
 
+.project-title {
+  display: flex;
+  align-items: center;
+}
+
+#edit-container {
+  display: flex;
+ align-items:  center;
+ justify-content: flex-end;
+  margin-left: 20px;
+  gap: 5px;
+  
+}
+.edit-icon {
+  width: 18px;
+}
+
 .filters {
   width: 585px;
   display: flex;
   justify-content: space-between;
 }
 
+/* buttons */
 button {
   height: 37px;
   border: #1d6154 1px solid;
@@ -250,6 +272,25 @@ button {
 .filter-btn:active {
   background-color: #1d6154;
   color: white;
+}
+
+/* modal button */
+.add-btn {
+  background-color: #1d6154;
+  color: white;
+  font-size: 14px;
+  width: 237px;
+  margin-top: 20px;
+}
+
+.delete-all-btn {
+  font-size: 14px;
+  font-family: 'Syne';
+  font-weight: lighter;
+  color: #D65353;
+  background-color: transparent;
+  border-color: transparent ;
+  margin-top: 10px;
 }
 
 .gallery {
@@ -370,16 +411,26 @@ label {
   align-items: center;
   background-color: white;
   width: 50vw;
+  height: 83vh;
   padding: 20px;
   border-radius: 10px;
 }
 
+
+.gallery-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 30px;
+  border-bottom: #B3B3B3 1px solid;
+  width: 80%;
+}
 .modal-gallery {
-  border: #1d6154 1px solid;
+  /* border: red 1px solid; */
   display: flex;
   flex-wrap: wrap;
-  width: 80%;
-  margin-top: 40px;
+  height: 350px;
+  overflow-y: scroll;
 }
 
 .modal-work-container {
@@ -400,6 +451,10 @@ label {
   display: flex;
   border-radius: 4px;
   justify-content: center;
+  position: relative;
+  top: 10px;
+  left: 50px;
+  cursor: pointer;
 }
 
 .close-icon-container {
@@ -417,4 +472,5 @@ label {
   width: 12px;
   height: 12px;
   align-self: center;
+  position: absolute;
 };

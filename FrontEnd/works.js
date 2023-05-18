@@ -1,19 +1,19 @@
 let works = window.localStorage.getItem("works");
 let categories = window.localStorage.getItem("categories");
-// let token = window.localStorage.getItem("token");
-console.log("works en local = ", works);
-console.log("categories en local = ", categories);
-
+let isAdmin = window.localStorage.getItem("isAdmin");
+const editLink = document.getElementById('edit-container');
+editLink.style.display = isAdmin === 'true' ? 'flex' : 'none';
 async function getWorks() {
   if (works === null) {
     const response = await fetch("http://localhost:5678/api/works");
     works = await response.json();
+    window.localStorage.setItem("works", JSON.stringify(works));
+
     console.log("work est fetch");
   } else {
     works = JSON.parse(works);
   }
   console.log(works);
-  // return works;
   generateGallery(works);
 }
 getWorks();
@@ -22,6 +22,7 @@ async function getCategories() {
   if (categories === null) {
     const response = await fetch("http://localhost:5678/api/categories");
     categories = await response.json();
+    window.localStorage.setItem("categories", JSON.stringify(categories));
     console.log("categories est fetch");
   } else {
     categories = JSON.parse(categories);

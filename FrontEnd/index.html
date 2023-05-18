@@ -12,7 +12,6 @@
     />
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
-    <script type="module" src="works.js"></script>
   </head>
   <body>
     <header>
@@ -51,17 +50,26 @@
         </article>
       </section>
       <section id="portfolio">
-        <h2>Mes Projets</h2>
-        <a href="#modal1" class="js-modal">Modifier</a>
-        <aside id="modal1" class="modal" style="display: none">
-          <div class="modal-wrapper">
-            <div class="close-icon-container">
-              <img src="./assets/icons/close.svg" class="close-icon">
-            </div>
-            <h3 class="gallery-title">Galerie Photo</h3>
-            <div class="modal-gallery">
-			    </div>  
-        </aside>
+        <div class="project-title">
+          <h2>Mes Projets</h2>
+          <div id="edit-container">
+            <img src="./assets/icons/edit-icon.svg" class="edit-icon">
+            <a href="#modal1" class="js-modal">modifier</a>
+          </div>
+            <aside id="modal1" class="modal" style="display: none">
+              <div class="modal-wrapper">
+                <div class="close-icon-container">
+                  <img src="./assets/icons/close.svg" class="close-icon">
+                </div>
+                <h3 class="gallery-title">Galerie Photo</h3>
+                <div class="gallery-container">
+                  <div class="modal-gallery"></div>
+                </div>
+                <button class="add-btn">Ajouter une photo</button>
+                <button class="delete-all-btn">Supprimer la galerie</button>
+              </div>  
+            </aside>
+        </div>
         <div class="filters">
           <button class="filter-btn-all">Tous</button>
         </div>
@@ -89,5 +97,7 @@
         </ul>
       </nav>
     </footer>
+    <script type="module" src="works.js"></script>
+
   </body>
 </html>
