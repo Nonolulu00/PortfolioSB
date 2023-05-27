@@ -65,9 +65,34 @@
                 <div class="gallery-container">
                   <div class="modal-gallery"></div>
                 </div>
-                <button class="add-btn">Ajouter une photo</button>
+                <button href="#modal2" class="add-btn js-modal">Ajouter une photo</button>
                 <button class="delete-all-btn">Supprimer la galerie</button>
               </div>  
+              <aside id="modal2" class="modal" style="display:none" >
+                <div class="modal-wrapper">
+                  <div class="icon-container">
+                    <img src="./assets/icons/back-arrow.png" class="back-icon">
+                    <img src="./assets/icons/close.svg" class="close-icon">
+                  </div>
+                  <h3 class="gallery-title">Ajout photo</h3>
+                  <form method="post" id="add-work-form" enctype="multipart/form-data">
+                    <div class="add-file-container">
+                      <img src="./assets/icons/picture-icon.png" class="picture-icon"/>
+                      <label class="custom-file-upload">
+                        <input type="file" name="image" accept="image/png, image/jpeg" class="add-file-input">
+                        +  Ajouter photo
+                      </label>
+                      <span class="size-infos">jpg, png : 4mo max</span>
+                    </div>
+                    <label>Titre</label>
+                    <input type="text" name="title" required>
+                    <label>Catégorie</label>
+                    <select class="select-categories" name='category' required ></select>
+                    <button type="submit" class="validate-btn" >Valider</button>
+                  </form>
+                </div>  
+                
+              </aside>
             </aside>
         </div>
         <div class="filters">

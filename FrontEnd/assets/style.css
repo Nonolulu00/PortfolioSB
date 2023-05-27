@@ -235,6 +235,7 @@ a:hover {
  justify-content: flex-end;
   margin-left: 20px;
   gap: 5px;
+  cursor: pointer;
   
 }
 .edit-icon {
@@ -293,6 +294,16 @@ button {
   margin-top: 10px;
 }
 
+.validate-btn{
+  width: 237px;
+background: #A7A7A7;
+border-radius: 60px;
+color: white;
+margin-top: 30px;
+border: transparent;
+
+}
+
 .gallery {
   width: 100%;
   display: grid;
@@ -328,10 +339,25 @@ input {
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
+select {
+  height: 50px;
+  font-family: "Work Sans";
+  font-size: 14px;
+  padding-left: 9px;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
 label {
   align-self: flex-start;
   margin: 1em 0 1em 0;
+  font-size: 14px;
+  font-family: 'Work Sans';
+  font-weight: 600;
+  color: #3d3d3d;
 }
+
 #contact textarea {
   border: none;
   resize: none;
@@ -369,12 +395,6 @@ footer nav ul {
   display: flex;
   flex-direction: column;
   width: 30ch;
-}
-
-label {
-  font-family: "Work Sans";
-  font-size: 14px;
-  color: #3d3d3d;
 }
 
 .submit-btn {
@@ -416,7 +436,63 @@ label {
   border-radius: 10px;
 }
 
+/* modal to add work to portfolio */
+#add-work-form {
+  border-bottom: #B3B3B3 1px solid;
+  justify-content: space-between;
+  width:420px;
+  height: 430px;
+  margin-top: 36px;
+  padding-bottom: 40px;
+  border: solid 1px salmon;
+}
+.icon-container{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px; 
+}
 
+.add-file-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 190px;
+  background-color: #E8F1F6;
+
+}
+.add-file-container img.preview {
+  width: 40%;
+  height: 100%;
+  object-fit: cover;
+}
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  background: #CBD6DC;
+  border-radius: 50px;
+  width: 173px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  color: #306685;
+  font-family: 'Work Sans';
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.picture-icon{
+  width: 58px;
+  height: 58px;
+}
+
+/* home page gallery */
 .gallery-container {
   margin-top: 30px;
   display: flex;
@@ -425,8 +501,9 @@ label {
   border-bottom: #B3B3B3 1px solid;
   width: 80%;
 }
+
+/* home page gallery */
 .modal-gallery {
-  /* border: red 1px solid; */
   display: flex;
   flex-wrap: wrap;
   height: 350px;
@@ -463,9 +540,9 @@ label {
   justify-content: flex-end;
 }
 
-.close-icon {
-  width: 17px;
-  height: 17px;
+.close-icon, .back-icon {
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 }
 .trash-icon {
