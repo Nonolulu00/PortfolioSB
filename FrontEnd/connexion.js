@@ -35,9 +35,9 @@ export function sendConnexionData() {
           response.json().then((data) => {
             const token = data.token;
             const userId = data.userId;
-            userId == 1 ? isAdmin = true : isAdmin = false;
-            localStorage.setItem('admin', isAdmin);
+            userId === 1 ? isAdmin = true : isAdmin = false;
             localStorage.setItem("token", token);
+            localStorage.setItem('admin', isAdmin);
             window.location.replace("index.html");
           });
           form.reset();

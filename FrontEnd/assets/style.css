@@ -185,6 +185,7 @@ a {
 nav a {
   padding: 0 10px;
   font-size: 1.2em;
+  cursor: pointer;
 }
 
 a:hover {
@@ -296,12 +297,12 @@ button {
 
 .validate-btn{
   width: 237px;
-background: #A7A7A7;
-border-radius: 60px;
-color: white;
-margin-top: 30px;
-border: transparent;
-
+  background: #A7A7A7;
+  border-radius: 60px;
+  color: white;
+  margin-top: 30px;
+  border: transparent;
+  align-self: center;
 }
 
 .gallery {
@@ -333,9 +334,10 @@ form {
 }
 
 input {
+  font-family: "Work Sans";
   height: 50px;
   padding-left: 9px;
-  font-size: 1.2em;
+  font-size: 14px;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }

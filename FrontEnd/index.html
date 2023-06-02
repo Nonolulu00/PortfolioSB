@@ -20,7 +20,7 @@
         <ul>
           <a>projets</a>
           <a>contact</a>
-          <a href="./connexion.html">login</a>
+          <a id="log">login</a>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
@@ -53,47 +53,65 @@
         <div class="project-title">
           <h2>Mes Projets</h2>
           <div id="edit-container">
-            <img src="./assets/icons/edit-icon.svg" class="edit-icon">
+            <img src="./assets/icons/edit-icon.svg" class="edit-icon" />
             <a href="#modal1" class="js-modal">modifier</a>
           </div>
-            <aside id="modal1" class="modal" style="display: none">
+          <aside id="modal1" class="modal" style="display: none">
+            <div class="modal-wrapper">
+              <div class="close-icon-container">
+                <img src="./assets/icons/close.svg" class="close-icon" />
+              </div>
+              <h3 class="gallery-title">Galerie Photo</h3>
+              <div class="gallery-container">
+                <div class="modal-gallery"></div>
+              </div>
+              <button href="#modal2" class="add-btn js-modal">
+                Ajouter une photo
+              </button>
+              <button class="delete-all-btn">Supprimer la galerie</button>
+            </div>
+            <aside id="modal2" class="modal" style="display: none">
               <div class="modal-wrapper">
-                <div class="close-icon-container">
-                  <img src="./assets/icons/close.svg" class="close-icon">
+                <div class="icon-container">
+                  <img src="./assets/icons/back-arrow.png" class="back-icon" />
+                  <img src="./assets/icons/close.svg" class="close-icon" />
                 </div>
-                <h3 class="gallery-title">Galerie Photo</h3>
-                <div class="gallery-container">
-                  <div class="modal-gallery"></div>
-                </div>
-                <button href="#modal2" class="add-btn js-modal">Ajouter une photo</button>
-                <button class="delete-all-btn">Supprimer la galerie</button>
-              </div>  
-              <aside id="modal2" class="modal" style="display:none" >
-                <div class="modal-wrapper">
-                  <div class="icon-container">
-                    <img src="./assets/icons/back-arrow.png" class="back-icon">
-                    <img src="./assets/icons/close.svg" class="close-icon">
+                <h3 class="gallery-title">Ajout photo</h3>
+                <form
+                  method="post"
+                  id="add-work-form"
+                  enctype="multipart/form-data"
+                >
+                  <div class="add-file-container">
+                    <img
+                      src="./assets/icons/picture-icon.png"
+                      class="picture-icon"
+                    />
+                    <label class="custom-file-upload">
+                      <input
+                        type="file"
+                        name="image"
+                        accept="image/png, image/jpeg"
+                        class="add-file-input"
+                        id="file-input"
+                      />
+                      + Ajouter photo
+                    </label>
+                    <span class="size-infos">jpg, png : 4mo max</span>
                   </div>
-                  <h3 class="gallery-title">Ajout photo</h3>
-                  <form method="post" id="add-work-form" enctype="multipart/form-data">
-                    <div class="add-file-container">
-                      <img src="./assets/icons/picture-icon.png" class="picture-icon"/>
-                      <label class="custom-file-upload">
-                        <input type="file" name="image" accept="image/png, image/jpeg" class="add-file-input">
-                        +  Ajouter photo
-                      </label>
-                      <span class="size-infos">jpg, png : 4mo max</span>
-                    </div>
-                    <label>Titre</label>
-                    <input type="text" name="title" required>
-                    <label>Catégorie</label>
-                    <select class="select-categories" name='category' required ></select>
-                    <button type="submit" class="validate-btn" >Valider</button>
-                  </form>
-                </div>  
-                
-              </aside>
+                  <label>Titre</label>
+                  <input type="text" name="title" required />
+                  <label>Catégorie</label>
+                  <select
+                    class="select-categories"
+                    name="category"
+                    required
+                  ></select>
+                  <button type="submit" class="validate-btn">Valider</button>
+                </form>
+              </div>
             </aside>
+          </aside>
         </div>
         <div class="filters">
           <button class="filter-btn-all">Tous</button>

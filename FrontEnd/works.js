@@ -1,20 +1,25 @@
-let works = window.localStorage.getItem("works");
+let storedWorks = window.localStorage.getItem("works");
+let works;
 let categories = window.localStorage.getItem("categories");
 let isAdmin = window.localStorage.getItem("admin");
 let token = window.localStorage.getItem("token");
+
+const logLink = document.getElementById("log");
+if (isAdmin && token) {
+  logLink.innerText = "logout";
+}
 
 const editLink = document.getElementById("edit-container");
 editLink.style.display = isAdmin === "true" ? "flex" : "none";
 
 async function getWorks() {
-  if (works === null) {
+  if (storedWorks === null) {
     const response = await fetch("http://localhost:5678/api/works");
     works = await response.json();
     window.localStorage.setItem("works", JSON.stringify(works));
   } else {
-    works = JSON.parse(works);
+    works = JSON.parse(storedWorks);
   }
-  console.log(works);
   generateGallery(works);
   return works;
 }
@@ -25,11 +30,9 @@ async function getCategories() {
     const response = await fetch("http://localhost:5678/api/categories");
     categories = await response.json();
     window.localStorage.setItem("categories", JSON.stringify(categories));
-    console.log("categories est fetch");
   } else {
     categories = JSON.parse(categories);
   }
-  console.log(categories);
   generateFilters(categories);
   addFilterListener(categories, works);
 }
@@ -142,8 +145,6 @@ function generateModalGallery(works) {
     workContainer.dataset.id = work.id;
     trashContainer.addEventListener("click", function () {
       const workId = workContainer.dataset.id;
-      console.log("Trash clicked");
-      console.log("Work ID:", workId);
       deleteWork(workId);
     });
 
@@ -158,7 +159,7 @@ function generateModalGallery(works) {
 function deleteWork(workId) {
   const modalGallery = document.querySelector(".modal-gallery");
   const worksGallery = document.querySelector(".gallery");
-  let item = works.find((element) => element.id === workId);
+  let item = works.findIndex((element) => element.id === workId);
   let index = 0;
   if (item) {
     index = works.indexOf(item);
@@ -192,61 +193,47 @@ function generateSelectButton() {
   for (let i = 0; i < categories.length; i++) {
     let option = document.createElement("option");
     option.classList.add("select-option");
-    option.value = categories[i].name;
+    option.value = categories[i].id;
     option.innerText = categories[i].name;
     selectCategories.appendChild(option);
   }
 }
 
 //get a preview of the selected work you want to add
-let addButton = document.querySelector(".add-file-input");
+const fileInput = document.getElementById("file-input");
+
 let originalAddworkModal = document.querySelector(
   ".add-file-container"
 ).innerHTML;
 
+// Preview selected work photo
 function previewImage(event) {
-  let file = event.target.files[0];
+  const file = event.target.files[0];
   if (file && file.type.indexOf("image/") === 0) {
-    let preview = document.querySelector(".add-file-container");
+    const preview = document.querySelector(".add-file-container");
     preview.innerHTML = "";
-    const img = document.createElement("selected-img");
+    const img = document.createElement("img");
     img.classList.add("preview");
     img.src = URL.createObjectURL(file);
     preview.appendChild(img);
   }
 }
-addButton.addEventListener("change", previewImage);
 
+fileInput.addEventListener("change", previewImage);
+
+// empty all fields of form
 function resetModal() {
   let preview = document.querySelector(".add-file-container");
+  let inputs = document.querySelectorAll("input");
   preview.innerHTML = originalAddworkModal;
-  addButton.value = "";
+  fileInput.value = "";
+  inputs.forEach((input) => (input.value = ""));
 }
-function addWork() {
-  // const addButton = document.querySelector('.add-btn');
-  const form = document.getElementById("add-work-form");
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    console.log(isFormValid(form));
-    if (isFormValid(form)) {
-      const formData = new FormData(form);
-      console.log(formData);
-    }
-    else{
-      console.log("nope");
-    }
-  });
-  // addButton.addEventListener("submit", function (event) {
-  //   event
-  // })
-}
-addWork();
-// check is all inputs are filled
+
 function isFormValid(form) {
   const inputs = form.querySelectorAll("input[required]");
-  const image = document.querySelector('.selected-img');
-  if(!image){
-    console.log("pas dimage");
+  if (fileInput.files.length === 0) {
+    alert("Veuillez sélectionner une photo");
     return false;
   }
   for (let i = 0; i < inputs.length; i++) {
@@ -254,5 +241,76 @@ function isFormValid(form) {
       return false;
     }
   }
-  return true; 
+  return true;
+}
+
+function updateSubmitButtonColor() {
+  const form = document.getElementById("add-work-form");
+  const submitBtn = document.querySelector(".validate-btn");
+  const inputs = form.querySelectorAll("input[required]");
+  const isFormFilled = Array.from(inputs).every(
+    (input) => input.value !== null
+  );
+  const isImageSelected = fileInput.files.length > 0;
+  submitBtn.style.background = isFormFilled && isImageSelected ? "#1d6154" : "";
+}
+
+const form = document.getElementById("add-work-form");
+const inputs = form.querySelectorAll("input[required]");
+
+inputs.forEach((input) => {
+  input.addEventListener("input", updateSubmitButtonColor);
+});
+fileInput.addEventListener("input", updateSubmitButtonColor);
+
+function addWork() {
+  const form = document.getElementById("add-work-form");
+  const modalGallery = document.querySelector(".modal-gallery");
+  const worksGallery = document.querySelector(".gallery");
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (isFormValid(form)) {
+      const formData = new FormData(form);
+      const file = fileInput.files[0];
+      formData.append("image", file);
+      fetch(`http://localhost:5678/api/works/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
+        .then((response) => {
+          if (response.status === 201) {
+            alert("photo ajoutée avec succès");
+            window.localStorage.removeItem("works");
+            closeModal();
+            setTimeout(() => {
+              getWorks();
+              modalGallery.innerHTML = "";
+              generateModalGallery(works);
+              worksGallery.innerHTML = "";
+              generateGallery(works);
+            }, 1000);
+          }
+        })
+        .catch(console.error());
+    }
+  });
+}
+addWork();
+console.log(logLink);
+function logout() {
+
+  window.localStorage.removeItem("token ");
+  window.localStorage.removeItem("admin");
+  window.location.reload();
+  logLink.innerText = "login";
+}
+if (logLink.innerText === "logout") {
+  logLink.addEventListener("click", logout);
+}
+else if(logLink.innerText === 'login') {
+  logLink.addEventListener("click", () => window.location.replace("connexion.html"));
 }
