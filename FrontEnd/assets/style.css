@@ -171,6 +171,12 @@ h3 {
   font-family: "Work Sans";
   font-size: 26px;
 }
+
+h5 {
+  font-family: "Work Sans";
+  font-size: 16px;
+}
+
 nav ul {
   display: flex;
   align-items: center;
@@ -180,7 +186,23 @@ nav ul {
 a {
   text-decoration: none;
   color: black;
+}
 
+.edit-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 59px;
+  background-color: black;
+  color: white;
+  width: 100%;
+  gap: 20px;
+  
+}
+.mode-container{
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 nav a {
   padding: 0 10px;
@@ -232,12 +254,11 @@ a:hover {
 
 #edit-container {
   display: flex;
- align-items:  center;
- justify-content: flex-end;
+  align-items: center;
+  justify-content: flex-end;
   margin-left: 20px;
   gap: 5px;
   cursor: pointer;
-  
 }
 .edit-icon {
   width: 18px;
@@ -287,22 +308,28 @@ button {
 
 .delete-all-btn {
   font-size: 14px;
-  font-family: 'Syne';
+  font-family: "Syne";
   font-weight: lighter;
-  color: #D65353;
+  color: #d65353;
   background-color: transparent;
-  border-color: transparent ;
+  border-color: transparent;
   margin-top: 10px;
 }
 
-.validate-btn{
+.validate-btn {
   width: 237px;
-  background: #A7A7A7;
+  background: #a7a7a7;
   border-radius: 60px;
   color: white;
   margin-top: 30px;
   border: transparent;
   align-self: center;
+}
+
+.banner-btn {
+  color: black;
+  font-weight: 400;
+  font-size: 14px;
 }
 
 .gallery {
@@ -355,7 +382,7 @@ label {
   align-self: flex-start;
   margin: 1em 0 1em 0;
   font-size: 14px;
-  font-family: 'Work Sans';
+  font-family: "Work Sans";
   font-weight: 600;
   color: #3d3d3d;
 }
@@ -440,29 +467,26 @@ footer nav ul {
 
 /* modal to add work to portfolio */
 #add-work-form {
-  border-bottom: #B3B3B3 1px solid;
   justify-content: space-between;
-  width:420px;
+  width: 420px;
   height: 430px;
   margin-top: 36px;
   padding-bottom: 40px;
-  border: solid 1px salmon;
 }
-.icon-container{
+.icon-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 20px; 
+  margin: 20px;
 }
 
-.add-file-container{
+.add-file-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 190px;
-  background-color: #E8F1F6;
-
+  background-color: #e8f1f6;
 }
 .add-file-container img.preview {
   width: 40%;
@@ -474,7 +498,7 @@ input[type="file"] {
 }
 
 .custom-file-upload {
-  background: #CBD6DC;
+  background: #cbd6dc;
   border-radius: 50px;
   width: 173px;
   height: 36px;
@@ -483,13 +507,13 @@ input[type="file"] {
   justify-content: center;
   align-self: center;
   color: #306685;
-  font-family: 'Work Sans';
+  font-family: "Work Sans";
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
 }
 
-.picture-icon{
+.picture-icon {
   width: 58px;
   height: 58px;
 }
@@ -500,7 +524,7 @@ input[type="file"] {
   display: flex;
   justify-content: center;
   padding-bottom: 30px;
-  border-bottom: #B3B3B3 1px solid;
+  border-bottom: #b3b3b3 1px solid;
   width: 80%;
 }
 
@@ -523,7 +547,7 @@ input[type="file"] {
   margin-bottom: 3px;
 }
 
-.trash-container{
+.trash-container {
   background-color: black;
   width: 20px;
   height: 20px;
@@ -542,7 +566,8 @@ input[type="file"] {
   justify-content: flex-end;
 }
 
-.close-icon, .back-icon {
+.close-icon,
+.back-icon {
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -552,4 +577,4 @@ input[type="file"] {
   height: 12px;
   align-self: center;
   position: absolute;
-};
+}

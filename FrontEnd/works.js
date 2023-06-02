@@ -11,6 +11,8 @@ if (isAdmin && token) {
 
 const editLink = document.getElementById("edit-container");
 editLink.style.display = isAdmin === "true" ? "flex" : "none";
+const editBanner = document.querySelector(".edit-banner");
+editBanner.style.display = isAdmin === "true" ? "flex" : "none";
 
 async function getWorks() {
   if (storedWorks === null) {
@@ -245,12 +247,9 @@ function isFormValid(form) {
 }
 
 function updateSubmitButtonColor() {
-  const form = document.getElementById("add-work-form");
   const submitBtn = document.querySelector(".validate-btn");
-  const inputs = form.querySelectorAll("input[required]");
-  const isFormFilled = Array.from(inputs).every(
-    (input) => input.value !== null
-  );
+  const title = document.getElementById('form-title');
+  const isFormFilled = title.value.length > 0;
   const isImageSelected = fileInput.files.length > 0;
   submitBtn.style.background = isFormFilled && isImageSelected ? "#1d6154" : "";
 }
@@ -283,26 +282,24 @@ function addWork() {
       })
         .then((response) => {
           if (response.status === 201) {
-            alert("photo ajoutée avec succès");
-            window.localStorage.removeItem("works");
-            closeModal();
-            setTimeout(() => {
-              getWorks();
-              modalGallery.innerHTML = "";
-              generateModalGallery(works);
-              worksGallery.innerHTML = "";
-              generateGallery(works);
-            }, 1000);
+            return response.json();
           }
+        })
+        .then((data) => {
+          alert("photo ajoutée avec succès");
+          closeModal();
+          works.push(data);
+          modalGallery.innerHTML = "";
+          generateModalGallery(works);
+          worksGallery.innerHTML = "";
+          generateGallery(works);
         })
         .catch(console.error());
     }
   });
 }
 addWork();
-console.log(logLink);
 function logout() {
-
   window.localStorage.removeItem("token ");
   window.localStorage.removeItem("admin");
   window.location.reload();
@@ -310,7 +307,8 @@ function logout() {
 }
 if (logLink.innerText === "logout") {
   logLink.addEventListener("click", logout);
-}
-else if(logLink.innerText === 'login') {
-  logLink.addEventListener("click", () => window.location.replace("connexion.html"));
+} else if (logLink.innerText === "login") {
+  logLink.addEventListener("click", () =>
+    window.location.replace("connexion.html")
+  );
 }

@@ -13,6 +13,13 @@
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
+  <div class="edit-banner">
+    <div class="mode-container">
+      <img src="./assets/icons/white-edit-icon.png" class="edit-icon"/>
+      <h5>Mode Édition</h5>
+    </div>
+    <button class="banner-btn">publier les changements</button>
+  </div>
   <body>
     <header>
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
@@ -100,7 +107,7 @@
                     <span class="size-infos">jpg, png : 4mo max</span>
                   </div>
                   <label>Titre</label>
-                  <input type="text" name="title" required />
+                  <input id='form-title'type="text" name="title" required />
                   <label>Catégorie</label>
                   <select
                     class="select-categories"
