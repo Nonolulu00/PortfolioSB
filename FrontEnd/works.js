@@ -14,6 +14,7 @@ editLink.style.display = isAdmin === "true" ? "flex" : "none";
 const editBanner = document.querySelector(".edit-banner");
 editBanner.style.display = isAdmin === "true" ? "flex" : "none";
 
+// Get works data
 async function getWorks() {
   if (storedWorks === null) {
     const response = await fetch("http://localhost:5678/api/works");
