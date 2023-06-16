@@ -1,5 +1,5 @@
 let storedWorks = window.localStorage.getItem("works");
-let works;
+let works = storedWorks ? JSON.parse(storedWorks) : [];
 let categories = window.localStorage.getItem("categories");
 let isAdmin = window.localStorage.getItem("admin");
 let token = window.localStorage.getItem("token");
@@ -100,6 +100,7 @@ const openModal = function (e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
   target.style.display = "flex";
+  activeModals.push(target);
   modal = target;
   document.getElementsByClassName("modal-gallery")[0].innerHTML = " ";
   generateModalGallery(works);
@@ -110,18 +111,24 @@ const openModal = function (e) {
       event.target.matches(".back-icon") ||
       event.target.matches(".modal")
     ) {
-      closeModal();
+      if (modal === target) {
+        closeModal(target);
+      } else {
+        closeModal();
+      }
     }
   });
 };
 
-const closeModal = function () {
-  if (modal) {
-    modal.style.display = "none";
+let activeModals = [];
+const closeModal = function (target) {
+  if (activeModals.length > 0) {
+    const lastModal = target || activeModals.pop();
+    lastModal.style.display = 'none';
+    resetModal();
   }
-  modal = null;
-  resetModal();
 };
+
 
 document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
@@ -145,7 +152,7 @@ function generateModalGallery(works) {
     const edit = document.createElement("p");
     edit.innerText = "éditer";
 
-    workContainer.dataset.id = work.id;
+    workContainer.setAttribute("data-id", work.id);
     trashContainer.addEventListener("click", function () {
       const workId = workContainer.dataset.id;
       deleteWork(workId);
@@ -162,10 +169,10 @@ function generateModalGallery(works) {
 function deleteWork(workId) {
   const modalGallery = document.querySelector(".modal-gallery");
   const worksGallery = document.querySelector(".gallery");
-  let item = works.findIndex((element) => element.id === workId);
-  let index = 0;
-  if (item) {
-    index = works.indexOf(item);
+  let item = works.findIndex((element) => element.id === parseInt(workId));
+  let index;
+  if (item !== -1) {
+    index = item;
   }
   fetch(`http://localhost:5678/api/works/${workId}`, {
     method: "DELETE",
@@ -294,6 +301,7 @@ function addWork() {
           generateModalGallery(works);
           worksGallery.innerHTML = "";
           generateGallery(works);
+          localStorage.setItem("works", JSON.stringify(works));
         })
         .catch(console.error());
     }
