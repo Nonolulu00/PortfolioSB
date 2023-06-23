@@ -1,5 +1,5 @@
-let storedWorks = window.localStorage.getItem("works");
-let works = storedWorks ? JSON.parse(storedWorks) : [];
+export let baseApiUrl = "http://localhost:5678/api";
+let works = [];
 let categories = window.localStorage.getItem("categories");
 let isAdmin = window.localStorage.getItem("admin");
 let token = window.localStorage.getItem("token");
@@ -14,42 +14,31 @@ editLink.style.display = isAdmin === "true" ? "flex" : "none";
 const editBanner = document.querySelector(".edit-banner");
 editBanner.style.display = isAdmin === "true" ? "flex" : "none";
 
-// Get works data
 async function getWorks() {
-  if (storedWorks === null) {
-    const response = await fetch("http://localhost:5678/api/works");
-    works = await response.json();
-    window.localStorage.setItem("works", JSON.stringify(works));
-  } else {
-    works = JSON.parse(storedWorks);
-  }
-  generateGallery(works);
+  const response = await fetch(`${baseApiUrl}/works`);
+  works = await response.json();
   return works;
 }
-getWorks();
+
+async function resetWorks() {
+  const allWorks = await getWorks();
+  const gallerySection = document.querySelector(".gallery");
+  gallerySection.innerHTML = "";
+  generateGallery(allWorks);
+  const modalGallery = document.querySelector(".modal-gallery");
+  modalGallery.innerHTML = "";
+  generateModalGallery(allWorks);
+}
 
 async function getCategories() {
   if (categories === null) {
-    const response = await fetch("http://localhost:5678/api/categories");
+    const response = await fetch(`${baseApiUrl}/categories`);
     categories = await response.json();
     window.localStorage.setItem("categories", JSON.stringify(categories));
   } else {
     categories = JSON.parse(categories);
+    addFilterListener(categories, works);
   }
-  generateFilters(categories);
-  addFilterListener(categories, works);
-}
-
-getCategories();
-
-function generateFilters(categories) {
-  categories.forEach((category) => {
-    const filterContainer = document.querySelector(".filters");
-    const filterBtn = document.createElement("button");
-    filterBtn.classList.add("filter-btn");
-    filterBtn.innerText = category.name;
-    filterContainer.appendChild(filterBtn);
-  });
 }
 
 // Generates the gallery with all works
@@ -70,10 +59,29 @@ function generateGallery(works) {
   });
 }
 
+// Generates the filters button in DOM
+function generateFilters(categories) {
+  categories.forEach((category) => {
+    const filterContainer = document.querySelector(".filters");
+    const filterBtn = document.createElement("button");
+    filterBtn.classList.add("filter-btn");
+    filterBtn.innerText = category.name;
+    filterContainer.appendChild(filterBtn);
+  });
+}
+
+// this listener actives the display of selected works only and handle the change of the focused filter
 function addFilterListener(categories, works) {
   const filterButtons = document.querySelectorAll(".filter-btn");
+  const filterButtonAll = document.querySelector(".filter-btn-all");
+
   filterButtons.forEach((button, i) => {
     button.addEventListener("click", () => {
+      filterButtons.forEach((button) => {
+        button.classList.remove("active"); // Remove active class from all buttons
+      });
+      filterButtonAll.classList.remove("active");
+      button.classList.add("active");
       const selectedCategoryId = categories[i].id;
       const selectedWorks = [];
       works.forEach((work) => {
@@ -86,24 +94,40 @@ function addFilterListener(categories, works) {
       generateGallery(selectedWorks);
     });
   });
-  const filterButtonAll = document.querySelector(".filter-btn-all");
+
+  //handles the case of the "TOUS" button
   filterButtonAll.addEventListener("click", () => {
+    filterButtons.forEach((button) => {
+      button.classList.remove("active");
+    });
+    filterButtonAll.classList.add("active");
     const gallerySection = document.querySelector(".gallery");
     gallerySection.innerHTML = "";
     generateGallery(works);
   });
 }
 
+async function createDOMelements() {
+  await getWorks();
+  await getCategories();
+  generateGallery(works);
+  generateFilters(categories);
+  addFilterListener(categories, works);
+}
+
+createDOMelements();
+
 //modify works modal
 let modal = null;
-const openModal = function (e) {
+const openModal = async function (e) {
   e.preventDefault();
+  const allWorks = await getWorks();
   const target = document.querySelector(e.target.getAttribute("href"));
   target.style.display = "flex";
   activeModals.push(target);
   modal = target;
   document.getElementsByClassName("modal-gallery")[0].innerHTML = " ";
-  generateModalGallery(works);
+  generateModalGallery(allWorks);
   generateSelectButton();
   modal.addEventListener("click", function (event) {
     if (
@@ -121,14 +145,14 @@ const openModal = function (e) {
 };
 
 let activeModals = [];
-const closeModal = function (target) {
+const closeModal = async function (target) {
   if (activeModals.length > 0) {
     const lastModal = target || activeModals.pop();
-    lastModal.style.display = 'none';
+    lastModal.style.display = "none";
     resetModal();
+    resetWorks();
   }
 };
-
 
 document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
@@ -174,7 +198,7 @@ function deleteWork(workId) {
   if (item !== -1) {
     index = item;
   }
-  fetch(`http://localhost:5678/api/works/${workId}`, {
+  fetch(`${baseApiUrl}/works/${workId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -184,7 +208,6 @@ function deleteWork(workId) {
       if (response.ok) {
         alert("Photo supprimée avec succès");
         works.splice(index, 1);
-        window.localStorage.setItem("works", JSON.stringify(works));
         modalGallery.innerHTML = "";
         generateModalGallery(works);
         worksGallery.innerHTML = "";
@@ -212,31 +235,33 @@ function generateSelectButton() {
 //get a preview of the selected work you want to add
 const fileInput = document.getElementById("file-input");
 
-let originalAddworkModal = document.querySelector(
-  ".add-file-container"
-).innerHTML;
+function previewImage() {
+  const previewContainer = document.getElementById("preview-container");
+  const previewImage = document.getElementById("preview-image");
+  const fileInputContainer = document.getElementById("file-input-container");
+  const file = fileInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      previewImage.src = reader.result;
+      previewContainer.style.display = "block";
+      fileInputContainer.style.display = "none";
+    };
 
-// Preview selected work photo
-function previewImage(event) {
-  const file = event.target.files[0];
-  if (file && file.type.indexOf("image/") === 0) {
-    const preview = document.querySelector(".add-file-container");
-    preview.innerHTML = "";
-    const img = document.createElement("img");
-    img.classList.add("preview");
-    img.src = URL.createObjectURL(file);
-    preview.appendChild(img);
+    reader.readAsDataURL(file);
   }
 }
 
 fileInput.addEventListener("change", previewImage);
 
-// empty all fields of form
 function resetModal() {
-  let preview = document.querySelector(".add-file-container");
-  let inputs = document.querySelectorAll("input");
-  preview.innerHTML = originalAddworkModal;
+  const previewContainer = document.getElementById("preview-container");
+  const fileInputContainer = document.getElementById("file-input-container");
+
   fileInput.value = "";
+  previewContainer.style.display = "none";
+  fileInputContainer.style.display = "flex";
+  let inputs = document.querySelectorAll("input");
   inputs.forEach((input) => (input.value = ""));
 }
 
@@ -256,7 +281,7 @@ function isFormValid(form) {
 
 function updateSubmitButtonColor() {
   const submitBtn = document.querySelector(".validate-btn");
-  const title = document.getElementById('form-title');
+  const title = document.getElementById("form-title");
   const isFormFilled = title.value.length > 0;
   const isImageSelected = fileInput.files.length > 0;
   submitBtn.style.background = isFormFilled && isImageSelected ? "#1d6154" : "";
@@ -281,7 +306,7 @@ function addWork() {
       const formData = new FormData(form);
       const file = fileInput.files[0];
       formData.append("image", file);
-      fetch(`http://localhost:5678/api/works/`, {
+      fetch(`${baseApiUrl}/works/`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -293,15 +318,14 @@ function addWork() {
             return response.json();
           }
         })
-        .then((data) => {
+        .then(async () => {
           alert("photo ajoutée avec succès");
           closeModal();
-          works.push(data);
           modalGallery.innerHTML = "";
-          generateModalGallery(works);
+          const allWorks = await getWorks();
+          generateModalGallery(allWorks);
           worksGallery.innerHTML = "";
-          generateGallery(works);
-          localStorage.setItem("works", JSON.stringify(works));
+          generateGallery(allWorks);
         })
         .catch(console.error());
     }

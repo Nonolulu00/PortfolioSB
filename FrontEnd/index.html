@@ -90,21 +90,26 @@
                   enctype="multipart/form-data"
                 >
                   <div class="add-file-container">
-                    <img
-                      src="./assets/icons/picture-icon.png"
-                      class="picture-icon"
-                    />
-                    <label class="custom-file-upload">
-                      <input
-                        type="file"
-                        name="image"
-                        accept="image/png, image/jpeg"
-                        class="add-file-input"
-                        id="file-input"
+                    <div id="file-input-container">
+                      <img
+                        src="./assets/icons/picture-icon.png"
+                        class="picture-icon"
                       />
-                      + Ajouter photo
-                    </label>
-                    <span class="size-infos">jpg, png : 4mo max</span>
+                      <label class="custom-file-upload">
+                        <input
+                          type="file"
+                          accept="image/png, image/jpeg"
+                          class="add-file-input"
+                          id="file-input"
+                        />
+                        + Ajouter photo
+                      </label>
+                      <span class="size-infos">jpg, png : 4mo max</span>
+                    </div>
+                    <div id="preview-container" style="display: none;">
+                      <input type="hidden" name="image" id="preview-image-input" />
+                      <img id="preview-image" />
+                    </div>
                   </div>
                   <label>Titre</label>
                   <input id='form-title'type="text" name="title" required />
@@ -121,7 +126,7 @@
           </aside>
         </div>
         <div class="filters">
-          <button class="filter-btn-all">Tous</button>
+          <button class="filter-btn-all active">Tous</button>
         </div>
         <div class="gallery"></div>
       </section>
