@@ -297,8 +297,6 @@ fileInput.addEventListener("input", updateSubmitButtonColor);
 
 function addWork() {
   const form = document.getElementById("add-work-form");
-  const modalGallery = document.querySelector(".modal-gallery");
-  const worksGallery = document.querySelector(".gallery");
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -321,11 +319,6 @@ function addWork() {
         .then(async () => {
           alert("photo ajoutée avec succès");
           closeModal();
-          modalGallery.innerHTML = "";
-          const allWorks = await getWorks();
-          generateModalGallery(allWorks);
-          worksGallery.innerHTML = "";
-          generateGallery(allWorks);
         })
         .catch(console.error());
     }
